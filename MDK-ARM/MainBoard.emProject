@@ -1,0 +1,119 @@
+<!DOCTYPE CrossStudio_Project_File>
+<solution Name="MainBoard" target="8" version="2">
+  <project Name="MainBoard">
+    <configuration
+      Name="Common"
+      arm_architecture="v7EM"
+      arm_core_type="Cortex-M4"
+      arm_endian="Little"
+      arm_fpu_type="FPv4-SP-D16"
+      arm_simulator_memory_simulation_parameter="RX 08000000,00080000,FFFFFFFF;RWX 20000000,00020000,CDCDCDCD"
+      arm_target_device_name="STM32F407VE"
+      arm_target_interface_type="SWD"
+      debug_start_from_entry_point_symbol="No"
+      debug_target_connection="J-Link"
+      linker_section_placements_segments="FLASH1 RX 0x08000000 0x00080000;RAM1 RWX 0x20000000 0x00020000"
+      project_directory=""
+      project_type="Executable" />
+    <configuration
+      Name="Internal"
+      arm_linker_variant="SEGGER"
+      build_intermediate_directory="Output/$(ProjectName) $(Configuration)/Obj"
+      build_output_directory="Output/$(Configuration)/Exe"
+      build_output_file_name="$(OutDir)/$(ProjectName)$(EXE)"
+      link_linker_script_file="$(StudioDir)/samples/SEGGER_Flash.icf" />
+    <configuration
+      Name="External Keil ARMCC"
+      project_type="Externally Built Executable" />
+    <folder Name="Internal Files">
+      <configuration Name="Common" build_exclude_from_build="Yes" />
+      <configuration Name="Internal" build_exclude_from_build="No" />
+      <file file_name="$(StudioDir)/samples/Cortex_M_Startup.s" />
+      <file file_name="$(StudioDir)/samples/SEGGER_THUMB_Startup.s" />
+    </folder>
+    <configuration
+      Name="MainBoard External"
+      armcc_cl_cpu="Cortex-M4"
+      armcc_cl_enable_debug_info="Yes"
+      armcc_cl_fpu="SoftVFP+VFPv4"
+      armcc_cl_optimization_level="Level 3"
+      asm_additional_options="--pd;&quot;__MICROLIB SETA 1&quot;"
+      asm_additional_options_backup="--cpu;Cortex-M4;--pd;&quot;__MICROLIB SETA 1&quot;"
+      build_intermediate_directory="MainBoard"
+      build_output_directory="MainBoard"
+      build_output_file_name="MainBoard/MainBoard.axf"
+      c_additional_options="-D__MICROLIB;--C99;--split_sections"
+      c_additional_options_backup="--cpu;Cortex-M4;-D__MICROLIB;--C99;-O3;--split_sections;-g"
+      link_additional_options_backup="--cpu;Cortex-M4;--ro_base=0x08000000;--rw_base=0x20000000;--first=__Vectors;--library_type=microlib"
+      linker_additional_options="--ro_base=0x08000000;--rw_base=0x20000000;--first=__Vectors;--library_type=microlib" />
+    <configuration
+      CMSIS_CORE="Yes"
+      Name="MainBoard"
+      c_preprocessor_definitions="USE_HAL_DRIVER;STM32F407xx"
+      c_user_include_directories="../Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F" />
+    <folder Name="Application/MDK-ARM">
+      <file file_name="startup_stm32f407xx.s">
+        <configuration Name="Internal" build_exclude_from_build="Yes" />
+      </file>
+    </folder>
+    <folder Name="Application/User">
+      <file file_name="../Src/dwt_delay.c" />
+      <file file_name="../Src/max7219.c" />
+      <file file_name="../Src/main.c" />
+      <file file_name="../Src/freertos.c" />
+      <file file_name="../Src/stm32f4xx_it.c" />
+      <file file_name="../Src/stm32f4xx_hal_msp.c" />
+      <file file_name="../Src/stm32f4xx_hal_timebase_tim.c" />
+      <file file_name="../Src/stepper.c" />
+      <file file_name="../Src/dfplayer.c" />
+    </folder>
+    <folder Name="Drivers/STM32F4xx_HAL_Driver">
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c" />
+      <file file_name="../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c" />
+    </folder>
+    <folder Name="Drivers/CMSIS">
+      <file file_name="../Src/system_stm32f4xx.c" />
+    </folder>
+    <folder Name="Middlewares/FreeRTOS">
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/croutine.c" />
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" />
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/list.c" />
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/queue.c" />
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" />
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/tasks.c" />
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/timers.c" />
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c" />
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c" />
+      <file file_name="../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/port.c" />
+    </folder>
+    <folder Name="::CMSIS" />
+  </project>
+  <configuration
+    Name="External Keil ARMCC"
+    build_generic_options_file_name="$(StudioDir)/targets/ARMCC_build_options.xml"
+    hidden="Yes"
+    macros="KEIL_TOOLKIT_DIR=C:/Keil_v5/ARM" />
+  <configuration Name="Internal" hidden="Yes" />
+  <configuration
+    Name="MainBoard External"
+    inherited_configurations="External Keil ARMCC;MainBoard" />
+  <configuration
+    Name="MainBoard Internal"
+    inherited_configurations="Internal;MainBoard" />
+  <configuration Name="MainBoard" hidden="Yes" />
+</solution>
