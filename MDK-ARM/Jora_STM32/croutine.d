@@ -1,0 +1,14 @@
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+jora_stm32\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+jora_stm32\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+jora_stm32\croutine.o: ../Inc/FreeRTOSConfig.h
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/croutine.h
+jora_stm32\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h

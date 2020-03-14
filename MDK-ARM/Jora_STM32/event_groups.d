@@ -1,0 +1,15 @@
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c
+jora_stm32\event_groups.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+jora_stm32\event_groups.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+jora_stm32\event_groups.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+jora_stm32\event_groups.o: ../Inc/FreeRTOSConfig.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+jora_stm32\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h

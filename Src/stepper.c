@@ -4,7 +4,7 @@
 extern TIM_HandleTypeDef htim1;
 
 void StepperMove(char channel, int pulsecount, int dir, int del, bool disable) {
-  HAL_GPIO_WritePin(GPIOE, EN_Pin, GPIO_PIN_SET); // Enable stepper driver
+  HAL_GPIO_WritePin(GPIOE, EN_Pin, GPIO_PIN_RESET); // Enable stepper driver
   //Forward: Dir = 1; Backward: Dir = 0;
   HAL_GPIO_WritePin(GPIOE, DIR_Pin, GPIO_PIN_RESET);
   if (dir == 1) {
@@ -20,10 +20,10 @@ void StepperMove(char channel, int pulsecount, int dir, int del, bool disable) {
   //"1000" is a 1000 microseconds, which depend from PWM frequence. 1000 microseconds = 2kHz pwm frequence.
   HAL_TIM_PWM_Stop(&htim1, channel); // Disable PWM timer
   if (!disable) {
-    HAL_GPIO_WritePin(GPIOE, EN_Pin, GPIO_PIN_RESET); //Disable stepper driver
+    HAL_GPIO_WritePin(GPIOE, EN_Pin, GPIO_PIN_SET); //Disable stepper driver
   }
   if (disable) {
-    HAL_GPIO_WritePin(GPIOE, EN_Pin, GPIO_PIN_SET); //Disable stepper driver
+    HAL_GPIO_WritePin(GPIOE, EN_Pin, GPIO_PIN_RESET); //Disable stepper driver
   }
   HAL_Delay(del);
 }

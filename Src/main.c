@@ -65,6 +65,7 @@ osThreadId_t MPEHandle;
 /* USER CODE BEGIN PV */
 //Input buffer from Atmega328p. Raw data
 uint8_t in_buffer[9]={0}; // Raw data from 3 sensors
+uint8_t mp1[10] = {0x7E, 0xFF, 06, 0x12, 00, 00, 01, 0xFE, 0xE8, 0xEF};
 //Sonar data chars
 char s1_capture[3]; //Sonar 1 char array
 char s2_capture[3];	//Sonar 2 char array
@@ -98,20 +99,22 @@ void En_Task(void *argument);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void sonnar() {
+	int i;
   //If RX receive. Interrupt. USART2
   if (huart2.RxXferCount == 0) {
     HAL_UART_Receive_IT(&huart2, in_buffer, 9);
   }
   //From RAW data to sensors arrays
-  for(int i = 0; i<=2;i++) {
+  for(i = 0; i<=2;i++) 
+	{
   s1_capture[i]=in_buffer[i];
   }
 
-  for(int i = 0; i<=2;i++) {
+  for(i = 0; i<=2;i++) {
   s2_capture[i]=in_buffer[i+3];
   }
   
-  for(int i = 0; i<=2;i++) {
+  for(i = 0; i<=2;i++) {
   s3_capture[i]=in_buffer[i+6];
   }
 
@@ -145,10 +148,9 @@ void sonnar() {
     s3_capture[1] = 0x00;
   }
   //Send command to Atmge328p compose data and transmit it to STM32 main board
-  memset(s1_capture, 0, 3); //Erase Sonar 1 buffer
-  memset(s2_capture, 0, 3); //Erase Sonar 2 buffer
-  memset(s3_capture, 0, 3); //Erase Sonar 3 buffer
+	memset(in_buffer, 0, 9); //Erase in buffer
   HAL_UART_Transmit(&huart2, measure_mess, 1, 500);
+  HAL_Delay(100);
   //Checking if human is there
   if ((s1_capture[0] <= 0x00 && s1_capture[1] <= 0x00 && s1_capture[2] <= 0x39) || (s2_capture[0] <= 0x00 && s2_capture[1] <= 0x00 && s2_capture[2] <= 0x39) || (s3_capture[0] <= 0x00 && s3_capture[1] <= 0x00 && s3_capture[2] <= 0x39)) {
     human = true; //If human near robot
@@ -156,6 +158,10 @@ void sonnar() {
     human = false; //If human far away from robot
   }
   HAL_Delay(500);
+}
+void test_mp3()
+{
+	HAL_UART_Transmit(&huart1, mp1, 10, 400);
 }
 /* USER CODE END 0 */
 
@@ -166,7 +172,7 @@ void sonnar() {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	HAL_GPIO_WritePin(GPIOE, EN_Pin, GPIO_PIN_SET);
   /* USER CODE END 1 */
   
 
@@ -196,8 +202,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
   TIM1->CCR1 = 168; //Stepper PWM duty cycle set. Equal 50%
   TIM8->CCR1 = 600; //Led PWM duty cycle set. Equal 50%
-  Init_7219();      //Init eye function
-  Clear_7219();     //Clear eye matrix
   HAL_Delay(1000);
   HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_1);   //Start PWM HTIM8
   HAL_UART_Receive_IT(&huart2, in_buffer, 9); //Start USART2 RX funcion
@@ -280,7 +284,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
   /* USER CODE END 3 */
-  }
+	}
 }
 
 /**
@@ -343,7 +347,7 @@ static void MX_SPI3_Init(void)
   /* SPI3 parameter configuration*/
   hspi3.Instance = SPI3;
   hspi3.Init.Mode = SPI_MODE_MASTER;
-  hspi3.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi3.Init.Direction = SPI_DIRECTION_1LINE;
   hspi3.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
@@ -509,7 +513,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 9600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
@@ -586,7 +590,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(STP_PWR_EN_GPIO_Port, STP_PWR_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, EN_5V_Pin|GPIO_PIN_0, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, EN_5V_Pin|CS_SELECT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : DIR_Pin */
   GPIO_InitStruct.Pin = DIR_Pin;
@@ -615,8 +619,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(STP_PWR_EN_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : EN_5V_Pin PD0 */
-  GPIO_InitStruct.Pin = EN_5V_Pin|GPIO_PIN_0;
+  /*Configure GPIO pins : EN_5V_Pin CS_SELECT_Pin */
+  GPIO_InitStruct.Pin = EN_5V_Pin|CS_SELECT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -645,9 +649,13 @@ void SonnarTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
-  for(;;) {
-    sonnar();
-    osDelay(1);
+  for(;;) 
+  {
+    if(mainpwr_en)
+    {
+      sonnar();
+      osDelay(1);
+    }
   }
   /* USER CODE END 5 */ 
 }
@@ -667,6 +675,8 @@ void StandbyTask(void *argument)
     HAL_Delay(500);
     if (!human && mainpwr_en) {
       //HAL_UART_Transmit(&huart1,mp15,10,1000);
+			//test_mp3();
+			//HAL_Delay(1000);
       if (standby_phrases == 12) {
         standby_phrases = 1;
       }
@@ -754,7 +764,10 @@ void EyeTask(void *argument)
   /* USER CODE BEGIN EyeTask */
   /* Infinite loop */
   for (;;) {
-    if (!human && mainpwr_en) {
+    if (!human && mainpwr_en)
+		{
+			Init_7219();      //Init eye function
+			Clear_7219();     //Clear eye matrix
       eye_standby();
       eye_standby();
       eye_move_left();
@@ -817,6 +830,7 @@ void En_Task(void *argument)
       {
         HAL_Delay(10);
       }
+      HAL_Delay(1000);
     }
   }
   /* USER CODE END En_Task */

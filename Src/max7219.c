@@ -5,8 +5,8 @@ extern SPI_HandleTypeDef hspi3;
 char dg=8;
 uint8_t eye_speed = 20; //Eye animation speed
 
-#define cs_set() HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET)
-#define cs_reset() HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_SET)
+#define cs_set() HAL_GPIO_WritePin(GPIOD, CS_SELECT_Pin, GPIO_PIN_RESET)
+#define cs_reset() HAL_GPIO_WritePin(GPIOD, CS_SELECT_Pin, GPIO_PIN_SET)
 
 void Send_7219 (uint8_t rg, uint8_t dt)
 {
@@ -30,12 +30,13 @@ void Clear_7219 (void)
 void Number_7219 (volatile long n)
 {
 	uint8_t ng=0;//переменная для минуса
+	uint8_t i=1;
 	if(n<0)
 	{
           ng=1;
           n*=-1;
 	}
-	uint8_t i=1;
+
 	do
 	{
           Send_7219(++i,n%10);//символ цифры
